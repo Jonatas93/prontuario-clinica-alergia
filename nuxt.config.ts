@@ -16,18 +16,12 @@ export default defineNuxtConfig({
     strict: true
   },
   experimental: {
-    // Necessário no Windows com ssr:false — garante que NUXT_VITE_NODE_OPTIONS
-    // seja setado imediatamente via Vite Environment API em vez de aguardar
-    // o hook vite:serverCreated do servidor SSR (que nunca dispara em modo SPA)
     viteEnvironmentApi: true
   },
-  // Fix para Windows: usa porta TCP em vez de Unix socket para HMR
   vite: {
     server: {
       hmr: {
-        protocol: 'ws',
-        host: 'localhost',
-        port: 24678
+        clientPort: 443
       }
     }
   },
