@@ -30,6 +30,11 @@ const route = useRoute()
 const router = useRouter()
 const patientsStore = usePatientsStore()
 const notifications = useNotificationsStore()
+const { canEditPatients } = usePermissions()
+
+if (!canEditPatients.value) {
+  await navigateTo(`/patients/${route.params.id}`)
+}
 
 const patient = computed(() => patientsStore.getById(route.params.id as string))
 

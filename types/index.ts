@@ -65,12 +65,21 @@ export interface MedicalRecord {
   createdAt: string
 }
 
+export type UserRole = 'admin' | 'medico' | 'enfermeiro'
+
 export interface User {
   id: string
   name: string
   email: string
-  role: string
+  role: UserRole
+  username: string
+  password: string
   crm?: string
+  coren?: string
+  specialty?: string
+  status: 'ativo' | 'inativo'
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Notification {

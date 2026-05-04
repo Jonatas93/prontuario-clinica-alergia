@@ -97,6 +97,7 @@
 definePageMeta({ layout: 'auth' })
 
 const auth = useAuthStore()
+const usersStore = useUsersStore()
 const router = useRouter()
 
 const form = reactive({ username: '', password: '' })
@@ -116,9 +117,10 @@ async function handleLogin() {
   }
   loading.value = true
   await new Promise(r => setTimeout(r, 600))
-  const ok = auth.login(form.username, form.password)
+  const user = usersStore.findByCredentials(form.username, form.password)
   loading.value = false
-  if (ok) {
+  if (user) {
+    auth.setUser(user)
     router.push('/dashboard')
   } else {
     error.value = 'Usuário ou senha incorretos.'

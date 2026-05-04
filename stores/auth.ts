@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
-import type { User } from '~/types'
+import type { User, UserRole } from '~/types'
+
+const VALID_ROLES: UserRole[] = ['admin', 'medico', 'enfermeiro']
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
@@ -8,23 +10,20 @@ export const useAuthStore = defineStore('auth', () => {
   function init() {
     const saved = localStorage.getItem('auth_user')
     if (saved) {
-      try { user.value = JSON.parse(saved) } catch {}
+      try {
+        const parsed = JSON.parse(saved)
+        if (VALID_ROLES.includes(parsed.role)) {
+          user.value = parsed
+        } else {
+          localStorage.removeItem('auth_user')
+        }
+      } catch {}
     }
   }
 
-  function login(username: string, password: string): boolean {
-    if (username === 'admin' && password === 'admin123') {
-      user.value = {
-        id: '1',
-        name: 'Dr. Carlos Eduardo Silva',
-        email: 'carlos.silva@allergymed.com.br',
-        role: 'Médico Alergologista',
-        crm: 'CRM/SP 123456'
-      }
-      localStorage.setItem('auth_user', JSON.stringify(user.value))
-      return true
-    }
-    return false
+  function setUser(loggedUser: User) {
+    user.value = loggedUser
+    localStorage.setItem('auth_user', JSON.stringify(loggedUser))
   }
 
   function logout() {
@@ -32,5 +31,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('auth_user')
   }
 
-  return { user, isAuthenticated, init, login, logout }
+  return { user, isAuthenticated, init, setUser, logout }
 })

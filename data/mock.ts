@@ -1,4 +1,4 @@
-import type { Patient, Appointment, MedicalRecord } from '~/types'
+import type { Patient, Appointment, MedicalRecord, User } from '~/types'
 
 export const mockPatients: Patient[] = [
   {
@@ -593,5 +593,71 @@ export const mockRecords: MedicalRecord[] = [
     ],
     followUp: 'Retorno em 4 semanas com diário de urticária preenchido. Avaliar necessidade de Omalizumabe.',
     createdAt: '2026-03-15T16:00:00'
+  }
+]
+
+export const mockUsers: User[] = [
+  {
+    id: '1',
+    name: 'Dr. Carlos Eduardo Silva',
+    email: 'carlos.silva@allergymed.com.br',
+    role: 'admin',
+    username: 'admin',
+    password: 'admin123',
+    crm: 'CRM/SP 123456',
+    specialty: 'Alergologia e Imunologia',
+    status: 'ativo',
+    createdAt: '2024-01-01T08:00:00',
+    updatedAt: '2024-01-01T08:00:00'
+  },
+  {
+    id: '2',
+    name: 'Dra. Patrícia Rocha',
+    email: 'patricia.rocha@allergymed.com.br',
+    role: 'medico',
+    username: 'patricia.rocha',
+    password: 'med123',
+    crm: 'CRM/SP 654321',
+    specialty: 'Alergologia e Imunologia',
+    status: 'ativo',
+    createdAt: '2024-01-05T08:00:00',
+    updatedAt: '2024-01-05T08:00:00'
+  },
+  {
+    id: '3',
+    name: 'Dr. Rodrigo Lima',
+    email: 'rodrigo.lima@allergymed.com.br',
+    role: 'medico',
+    username: 'rodrigo.lima',
+    password: 'med456',
+    crm: 'CRM/SP 789012',
+    specialty: 'Imunologia Clínica',
+    status: 'ativo',
+    createdAt: '2024-02-10T08:00:00',
+    updatedAt: '2024-02-10T08:00:00'
+  },
+  {
+    id: '4',
+    name: 'Enf. Juliana Santos',
+    email: 'juliana.santos@allergymed.com.br',
+    role: 'enfermeiro',
+    username: 'juliana.santos',
+    password: 'enf123',
+    coren: 'COREN/SP 123789',
+    status: 'ativo',
+    createdAt: '2024-01-10T08:00:00',
+    updatedAt: '2024-01-10T08:00:00'
+  },
+  {
+    id: '5',
+    name: 'Enf. Marcos Oliveira',
+    email: 'marcos.oliveira@allergymed.com.br',
+    role: 'enfermeiro',
+    username: 'marcos.oliveira',
+    password: 'enf456',
+    coren: 'COREN/SP 456123',
+    status: 'inativo',
+    createdAt: '2024-03-15T08:00:00',
+    updatedAt: '2024-03-15T08:00:00'
   }
 ]

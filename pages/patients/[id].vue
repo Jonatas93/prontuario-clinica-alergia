@@ -21,7 +21,7 @@
           </p>
         </div>
       </div>
-      <div class="flex gap-2">
+      <div v-if="canEditPatients" class="flex gap-2">
         <NuxtLink :to="`/patients/${patient.id}/edit`" class="btn-secondary">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -123,7 +123,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
         </svg>
         <p class="text-slate-400 dark:text-slate-500 text-sm">Nenhum prontuário registrado.</p>
-        <NuxtLink :to="`/records/${patient.id}/new`" class="btn-primary mt-4 inline-flex">
+        <NuxtLink v-if="canEditPatients" :to="`/records/${patient.id}/new`" class="btn-primary mt-4 inline-flex">
           Registrar consulta
         </NuxtLink>
       </div>
@@ -212,7 +212,7 @@
               <td class="max-w-xs truncate text-xs">{{ appt.reason || '—' }}</td>
               <td><AppointmentBadge :status="appt.status" /></td>
               <td>
-                <div class="flex justify-end gap-1">
+                <div v-if="canEditPatients" class="flex justify-end gap-1">
                   <button
                     v-if="appt.status === 'scheduled'"
                     @click="updateStatus(appt.id, 'confirmed')"
@@ -253,6 +253,7 @@ const appointmentsStore = useAppointmentsStore()
 const recordsStore = useRecordsStore()
 const notifications = useNotificationsStore()
 const { formatDate, formatAge } = useFormatters()
+const { canEditPatients } = usePermissions()
 
 const patient = computed(() => patientsStore.getById(route.params.id as string))
 const patientRecords = computed(() => recordsStore.byPatient(route.params.id as string))

@@ -23,6 +23,11 @@ definePageMeta({ middleware: 'auth' })
 const patientsStore = usePatientsStore()
 const notifications = useNotificationsStore()
 const router = useRouter()
+const { canEditPatients } = usePermissions()
+
+if (!canEditPatients.value) {
+  await navigateTo('/patients')
+}
 
 function handleSubmit(data: Omit<Patient, 'id' | 'createdAt' | 'updatedAt'>) {
   const patient = patientsStore.add(data)

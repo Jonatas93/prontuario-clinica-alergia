@@ -54,7 +54,7 @@
         <Transition name="fade">
           <div v-if="!collapsed" class="overflow-hidden min-w-0">
             <p class="text-sm font-medium truncate">{{ auth.user.name }}</p>
-            <p class="text-xs text-slate-400 truncate">{{ auth.user.role }}</p>
+            <p class="text-xs text-slate-400 truncate">{{ roleLabel }}</p>
           </div>
         </Transition>
       </div>
@@ -82,18 +82,29 @@ defineEmits(['toggle'])
 
 const auth = useAuthStore()
 const router = useRouter()
+const { canManageUsers } = usePermissions()
+
+const roleLabels: Record<string, string> = {
+  admin: 'Administrador',
+  medico: 'Médico',
+  enfermeiro: 'Enfermeiro'
+}
 
 const initials = computed(() => {
   if (!auth.user) return '?'
   return auth.user.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase()
 })
 
+const roleLabel = computed(() =>
+  auth.user ? (roleLabels[auth.user.role] ?? auth.user.role) : ''
+)
+
 function handleLogout() {
   auth.logout()
   router.push('/login')
 }
 
-const navItems = [
+const baseNavItems = [
   {
     to: '/dashboard',
     label: 'Dashboard',
@@ -125,6 +136,21 @@ const navItems = [
     })
   }
 ]
+
+const usersNavItem = {
+  to: '/users',
+  label: 'Usuários',
+  icon: defineComponent({
+    render: () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' }, [
+      h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
+        d: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z' })
+    ])
+  })
+}
+
+const navItems = computed(() =>
+  canManageUsers.value ? [...baseNavItems, usersNavItem] : baseNavItems
+)
 </script>
 
 <style scoped>

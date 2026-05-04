@@ -8,7 +8,7 @@
           {{ patientsStore.patients.length }} paciente(s) cadastrado(s)
         </p>
       </div>
-      <NuxtLink to="/patients/new" class="btn-primary">
+      <NuxtLink v-if="canEditPatients" to="/patients/new" class="btn-primary">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
@@ -82,6 +82,7 @@
                   Ver perfil
                 </NuxtLink>
                 <button
+                  v-if="canEditPatients"
                   @click="confirmDelete(patient)"
                   class="btn-ghost px-2 py-1 text-xs text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
                 >
@@ -115,6 +116,7 @@ definePageMeta({ middleware: 'auth' })
 
 const patientsStore = usePatientsStore()
 const notifications = useNotificationsStore()
+const { canEditPatients } = usePermissions()
 const { formatDate, formatAge } = useFormatters()
 
 const searchQuery = ref('')
