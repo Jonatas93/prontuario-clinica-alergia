@@ -30,9 +30,12 @@ export const usePatientsStore = defineStore('patients', () => {
   function search(query: string) {
     const q = query.toLowerCase().trim()
     if (!q) return sorted.value
-    return sorted.value.filter(p =>
-      p.name.toLowerCase().includes(q) || p.cpf.replace(/\D/g, '').includes(q.replace(/\D/g, ''))
-    )
+    const qDigits = q.replace(/\D/g, '')
+    return sorted.value.filter(p => {
+      const nameMatch = p.name.toLowerCase().includes(q)
+      const cpfMatch = qDigits.length > 0 && p.cpf.replace(/\D/g, '').includes(qDigits)
+      return nameMatch || cpfMatch
+    })
   }
 
   function add(data: Omit<Patient, 'id' | 'createdAt' | 'updatedAt'>) {
